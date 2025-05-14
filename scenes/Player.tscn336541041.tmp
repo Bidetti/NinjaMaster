@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://eflvwjlwf3nu"]
+[gd_scene load_steps=58 format=3 uid="uid://eflvwjlwf3nu"]
 
 [ext_resource type="Script" uid="uid://dguarw4836a1a" path="res://scripts/player.gd" id="1_cw2d6"]
 [ext_resource type="Texture2D" uid="uid://q7y4eqyxgcaw" path="res://assets/Player/Idle/Gun/Idle_Gun_Down.png" id="2_khinc"]
@@ -7,8 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://dmtctjjj3sugn" path="res://assets/Player/Idle/Gun/Idle_Gun_Right_Down.png" id="5_d3wef"]
 [ext_resource type="Texture2D" uid="uid://bpwjye720aut4" path="res://assets/Player/Idle/Gun/Idle_Gun_Right_Up.png" id="6_o4126"]
 [ext_resource type="Texture2D" uid="uid://b5tbv0vqkqudl" path="res://assets/Player/Idle/Gun/Idle_Gun_Up.png" id="7_lkdrv"]
-[ext_resource type="Texture2D" uid="uid://clh7r7grjwila" path="res://assets/UI/HP/heart.png" id="8_khinc"]
-[ext_resource type="PackedScene" uid="uid://dhoc16nh8dfba" path="res://scenes/Gun.tscn" id="9_bruh7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p7iby"]
 
@@ -386,69 +384,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bruh7"]
-atlas = ExtResource("8_khinc")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6eyey"]
-atlas = ExtResource("8_khinc")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d3wef"]
-atlas = ExtResource("8_khinc")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o4126"]
-atlas = ExtResource("8_khinc")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lkdrv"]
-atlas = ExtResource("8_khinc")
-region = Rect2(64, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_p7iby"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bruh7")
-}],
-"loop": true,
-"name": &"0_hp",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6eyey")
-}],
-"loop": true,
-"name": &"1_hp",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d3wef")
-}],
-"loop": true,
-"name": &"2_hp",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o4126")
-}],
-"loop": true,
-"name": &"3_hp",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lkdrv")
-}],
-"loop": true,
-"name": &"4_hp",
-"speed": 5.0
-}]
-
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_cw2d6")
 
@@ -458,6 +393,8 @@ shape = SubResource("CircleShape2D_p7iby")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_oanc2")
 animation = &"GUN_UP_IDLE"
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 2
@@ -474,17 +411,6 @@ one_shot = true
 [node name="ReloadTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="HPBar" type="AnimatedSprite2D" parent="CanvasLayer"]
-unique_name_in_owner = true
-position = Vector2(78, 58)
-scale = Vector2(5, 5)
-sprite_frames = SubResource("SpriteFrames_p7iby")
-animation = &"0_hp"
-
-[node name="Gun" parent="." instance=ExtResource("9_bruh7")]
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
 [connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

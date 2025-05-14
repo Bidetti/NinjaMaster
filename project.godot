@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="NinjaMaster"
+run/main_scene="uid://tidc6gxux4jr"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameScene="*res://scripts/game_scene.gd"
 
 [global_group]
 
