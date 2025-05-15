@@ -10,11 +10,11 @@ var is_reloading: bool = false
 var can_shoot: bool = true
 
 enum Direction { RIGHT, LEFT }
-enum VerticalAim { UP, DOWN, NEUTRAL }
+enum VerticalAim { UP, DOWN }
 enum ActionState { IDLE, ATTACK, RELOADING, RUN, WALK, RUN_SHOOTING, WALK_SHOOTING, DEATH }
 
 var current_direction: int = Direction.RIGHT
-var current_vertical_aim: int = VerticalAim.NEUTRAL
+var current_vertical_aim: int = VerticalAim.DOWN
 var current_action: int = ActionState.IDLE
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -22,7 +22,7 @@ var current_action: int = ActionState.IDLE
 @onready var bullet_spawn = $Gun/BulletSpawn
 @onready var reload_timer = $ReloadTimer
 @onready var shoot_timer = $ShootTimer
-@onready var audio_player = $AudioStreamPlayer2D
+@onready var audio_player = $AudioStreamPlayer
 
 @export var bullet_scene: PackedScene
 
@@ -52,11 +52,9 @@ func _handle_input():
 		current_direction = Direction.LEFT
 	
 	var angle = global_position.angle_to_point(mouse_pos)
-	if abs(angle) < PI/4:
-		current_vertical_aim = VerticalAim.NEUTRAL
-	elif angle < 0 and abs(angle) > PI/4:
+	if angle < 0:
 		current_vertical_aim = VerticalAim.UP
-	elif angle > 0 and abs(angle) > PI/4:
+	else:
 		current_vertical_aim = VerticalAim.DOWN
 	
 	if Input.is_action_just_pressed("shoot") and can_shoot and !is_reloading and ammo > 0:
@@ -94,11 +92,7 @@ func update_animation():
 	var animation_name = "GUN_"
 	
 	animation_name += "RIGHT" if current_direction == Direction.RIGHT else "LEFT"
-	
-	if current_vertical_aim == VerticalAim.UP:
-		animation_name += "_UP"
-	elif current_vertical_aim == VerticalAim.DOWN:
-		animation_name += "_DOWN"
+	animation_name += "_" + ("UP" if current_vertical_aim == VerticalAim.UP else "DOWN")
 	
 	match current_action:
 		ActionState.IDLE:
@@ -116,27 +110,23 @@ func update_animation():
 		ActionState.WALK_SHOOTING:
 			animation_name += "_WALK_SHOOTING"
 		ActionState.DEATH:
-			animation_name += "_DEATH"
+			animation_name = "GUN_" + ("RIGHT" if current_direction == Direction.RIGHT else "LEFT") + "_" + ("UP" if current_vertical_aim == VerticalAim.UP else "DOWN") + "_DEATH"
 	
 	if animated_sprite.sprite_frames.has_animation(animation_name):
 		animated_sprite.play(animation_name)
 	else:
+		print("Animação não encontrada: ", animation_name)
 		var fallback_name = ""
 		
-		if current_direction == Direction.RIGHT:
-			fallback_name = "move_right"
+		if current_action == ActionState.DEATH:
+			fallback_name = "GUN_" + ("RIGHT" if current_direction == Direction.RIGHT else "LEFT") + "_DEATH"
 		else:
-			fallback_name = "move_left"
+			fallback_name = "GUN_" + ("RIGHT" if current_direction == Direction.RIGHT else "LEFT") + "_" + ("UP" if current_vertical_aim == VerticalAim.UP else "DOWN") + "_IDLE"
 		
-		if !animated_sprite.sprite_frames.has_animation(fallback_name):
-			if animated_sprite.sprite_frames.has_animation("move_right"):
-				fallback_name = "move_right"
-			else:
-				print("Nenhuma animação disponível!")
-				return
-				
-		animated_sprite.play(fallback_name)
-		print("Animação não encontrada: ", animation_name, " usando fallback: ", fallback_name)
+		if animated_sprite.sprite_frames.has_animation(fallback_name):
+			animated_sprite.play(fallback_name)
+		else:
+			print("Fallback também não encontrado: ", fallback_name)
 	
 	update_gun_position()
 
@@ -206,4 +196,7 @@ func _ready():
 	
 func update_hp_bar():
 	var hp_animation = str(min(GameScene.player_hp, 4)) + "_hp"
-	%HPBar.play(hp_animation)
+	if %HPBar.sprite_frames.has_animation(hp_animation):
+		%HPBar.play(hp_animation)
+	else:
+		print("Animação de HP não encontrada: ", hp_animation)
