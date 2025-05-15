@@ -4,7 +4,7 @@
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 3
 script = ExtResource("1_3gvst")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=120 format=3 uid="uid://eflvwjlwf3nu"]
+[gd_scene load_steps=121 format=3 uid="uid://eflvwjlwf3nu"]
 
 [ext_resource type="Script" uid="uid://dguarw4836a1a" path="res://scripts/player.gd" id="1_cw2d6"]
 [ext_resource type="Texture2D" uid="uid://q7y4eqyxgcaw" path="res://assets/Player/Idle/Gun/Idle_Gun_Down.png" id="2_khinc"]
+[ext_resource type="PackedScene" uid="uid://ddf31dn1fmx7q" path="res://scenes/Bullet.tscn" id="2_srp4u"]
 [ext_resource type="Texture2D" uid="uid://b8cib28715yy2" path="res://assets/Player/Walk/Gun/walk_Gun_Down.png" id="3_0rnld"]
 [ext_resource type="Texture2D" uid="uid://bngwvpjq6oh0j" path="res://assets/Player/Idle/Gun/Idle_Gun_Left_Down.png" id="3_bruh7"]
 [ext_resource type="Texture2D" uid="uid://cvidmiugd55bs" path="res://assets/Player/Idle/Gun/Idle_Gun_Left_Up.png" id="4_6eyey"]
@@ -822,7 +823,9 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
 script = ExtResource("1_cw2d6")
+bullet = ExtResource("2_srp4u")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_p7iby")
@@ -836,6 +839,8 @@ collision_layer = 2
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+light_mask = 4
+visibility_layer = 4
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 

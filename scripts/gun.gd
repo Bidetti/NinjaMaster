@@ -17,7 +17,7 @@ var can_shoot: bool = true
 @onready var bullet_spawn = $BulletSpawn
 @onready var reload_timer = $ReloadTimer
 @onready var shoot_timer = $ShootTimer
-@onready var audio_player = $AudioStreamPlayer2D
+@onready var audio_player = $"../AudioStreamPlayer2D"
 
 func _ready():
 	reload_timer.wait_time = reload_time
@@ -26,6 +26,10 @@ func _ready():
 
 func shoot(direction: Vector2):
 	if ammo <= 0 or !can_shoot or is_reloading:
+		return false
+		
+	if bullet_scene == null:
+		print("ERRO: Cena Bullet não foi configurada no Gun!")
 		return false
 		
 	var bullet = bullet_scene.instantiate()
@@ -40,7 +44,8 @@ func shoot(direction: Vector2):
 	can_shoot = false
 	shoot_timer.start()
 	
-	audio_player.play()
+	if audio_player:
+		audio_player.play()
 	return true
 
 func reload():
