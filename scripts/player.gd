@@ -9,6 +9,9 @@ var max_ammo: int = 30
 var is_reloading: bool = false
 var can_shoot: bool = true
 
+var attack_animation_timer: float = 0.0
+var attack_animation_duration: float = 0.3
+
 enum Direction { RIGHT, LEFT }
 enum VerticalAim { UP, DOWN }
 enum ActionState { IDLE, ATTACK, RELOADING, RUN, WALK, RUN_SHOOTING, WALK_SHOOTING, DEATH }
@@ -31,7 +34,10 @@ func _process(delta):
 		current_action = ActionState.DEATH
 		update_animation()
 		return
-		
+	
+	if attack_animation_timer > 0:
+		attack_animation_timer -= delta
+	
 	_handle_input()
 	_update_state()
 	update_animation()
@@ -57,9 +63,12 @@ func _handle_input():
 	else:
 		current_vertical_aim = VerticalAim.DOWN
 	
-	if Input.is_action_just_pressed("shoot"):
+	if Input.is_action_pressed("shoot"):
 		var shoot_direction = (get_global_mouse_position() - global_position).normalized()
-		gun.shoot(shoot_direction)
+		var shot_fired = gun.shoot(shoot_direction)
+		
+		if shot_fired:
+			attack_animation_timer = attack_animation_duration
 	
 	if Input.is_action_just_pressed("reload"):
 		gun.reload()
@@ -70,6 +79,17 @@ func _update_state():
 		
 	if gun.is_reloading:
 		current_action = ActionState.RELOADING
+		return
+	
+	# Dar prioridade à animação de tiro se o timer estiver ativo
+	if attack_animation_timer > 0:
+		if velocity.length() > 0:
+			if velocity.length() >= sprint_speed * 0.8:
+				current_action = ActionState.RUN_SHOOTING
+			else:
+				current_action = ActionState.WALK_SHOOTING
+		else:
+			current_action = ActionState.ATTACK
 		return
 		
 	if velocity.length() > 0:
@@ -91,38 +111,39 @@ func _update_state():
 
 func update_animation():
 	var animation_name = "GUN_"
-	
-
 	if current_direction == Direction.RIGHT:
 		if current_vertical_aim == VerticalAim.UP:
-			animation_name += "RIGHT_UP"
+			animation_name += "RIGHT_UP_"
 		else:
-			animation_name += "RIGHT_DOWN"
+			animation_name += "RIGHT_DOWN_"
 	else:
 		if current_vertical_aim == VerticalAim.UP:
-			animation_name += "LEFT_UP"
+			animation_name += "LEFT_UP_"
 		else:
-			animation_name += "LEFT_DOWN"
+			animation_name += "LEFT_DOWN_"
 	
 	match current_action:
 		ActionState.IDLE:
-			animation_name += "_IDLE"
-		ActionState.ATTACK, ActionState.RUN_SHOOTING, ActionState.WALK_SHOOTING:
-			if velocity.length() > 0:
-				animation_name = animation_name.replace("_DOWN", "_DOWN_WALK").replace("_UP", "_UP_WALK")
-			else:
-				animation_name += "_IDLE"
+			animation_name += "IDLE"
+		ActionState.ATTACK:
+			animation_name += "ATTACK"
 		ActionState.RELOADING:
-			animation_name += "_IDLE"
-		ActionState.RUN, ActionState.WALK:
-			animation_name = animation_name.replace("_DOWN", "_DOWN_WALK").replace("_UP", "_UP_WALK")
+			animation_name += "RELOADING"
+		ActionState.RUN:
+			animation_name += "RUN"
+		ActionState.WALK:
+			animation_name += "WALK"
+		ActionState.RUN_SHOOTING:
+			animation_name += "RUN_SHOOTING"
+		ActionState.WALK_SHOOTING:
+			animation_name += "WALK_SHOOTING"
 		ActionState.DEATH:
-			animation_name += "_IDLE"
+			animation_name += "DEATH"
 	
 	if animated_sprite.sprite_frames.has_animation(animation_name):
 		animated_sprite.play(animation_name)
 	else:
-		var fallback_name = "GUN_DOWN_IDLE"
+		var fallback_name = "GUN_RIGHT_DOWN_IDLE"
 		
 		if animated_sprite.sprite_frames.has_animation(fallback_name):
 			animated_sprite.play(fallback_name)
