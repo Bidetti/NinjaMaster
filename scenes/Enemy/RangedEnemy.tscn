@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://c8614lpps5oe"]
+[gd_scene load_steps=38 format=3 uid="uid://c8614lpps5oe"]
 
 [ext_resource type="Script" uid="uid://ch1t0bhdjigxq" path="res://scripts/enemy/ranged_enemy.gd" id="1_ranged"]
 [ext_resource type="Texture2D" uid="uid://cwu72scsexfdd" path="res://assets/Enemies/MeleeEnemy/Pink_Monster_Death_8.png" id="2_gwjrq"]
@@ -9,6 +9,14 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ranged"]
 radius = 14.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwjrq"]
+atlas = ExtResource("5_pesay")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tehhw"]
+atlas = ExtResource("5_pesay")
+region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_38paw"]
 atlas = ExtResource("2_gwjrq")
@@ -116,6 +124,17 @@ region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tqmab"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwjrq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tehhw")
+}],
+"loop": true,
+"name": &"Aim",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_38paw")
@@ -234,7 +253,7 @@ shape = SubResource("CircleShape2D_ranged")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(0, 1, 0, 1)
 sprite_frames = SubResource("SpriteFrames_tqmab")
-animation = &"Walk"
+animation = &"Aim"
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 4

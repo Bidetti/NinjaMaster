@@ -88,7 +88,6 @@ func load_default_enemy_scenes():
 	]
 
 func start_next_wave():
-	print('Wave')
 	if current_wave >= wave_configs.size():
 		all_waves_completed.emit()
 		return
@@ -101,7 +100,6 @@ func start_next_wave():
 	spawn_wave_enemies()
 
 func spawn_wave_enemies():
-	print('Waveee')
 	var current_config = wave_configs[current_wave]
 	var enemies_to_spawn = []
 	
@@ -117,7 +115,6 @@ func spawn_wave_enemies():
 	spawn_enemies_sequence(enemies_to_spawn)
 
 func spawn_enemies_sequence(enemies_to_spawn: Array):
-	print('Waveeee')
 	for enemy_type in enemies_to_spawn:
 		spawn_enemy(enemy_type)
 		enemies_alive += 1
@@ -125,7 +122,6 @@ func spawn_enemies_sequence(enemies_to_spawn: Array):
 		await get_tree().create_timer(time_between_spawns).timeout
 
 func spawn_enemy(enemy_type: int):
-	print('Waveeeee')
 	if enemy_type >= enemy_scenes.size():
 		print("Erro: Tipo de inimigo inválido: ", enemy_type)
 		return

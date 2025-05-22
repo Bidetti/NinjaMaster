@@ -1473,6 +1473,9 @@ y_sort_enabled = true
 [node name="Camera2D" type="Camera2D" parent="ObstacleLayer/Player"]
 zoom = Vector2(3, 3)
 
+[node name="StaticBody2D" type="StaticBody2D" parent="ObstacleLayer"]
+collision_mask = 0
+
 [node name="SceneEntrance" type="Area2D" parent="."]
 script = ExtResource("4_e2ns8")
 next_scene = "res://GameScene/dungeon_scene.tscn"

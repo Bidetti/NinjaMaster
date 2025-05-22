@@ -1,8 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://c3nak5hx2y8e4"]
+[gd_scene load_steps=38 format=3 uid="uid://c3nak5hx2y8e4"]
 
 [ext_resource type="Script" uid="uid://is705t3qchc" path="res://scripts/enemy/fast_enemy.gd" id="1_fast"]
 [ext_resource type="Texture2D" uid="uid://bhioscp2cn2b1" path="res://assets/Enemies/FastEnemy/Dude_Monster_Idle_4.png" id="2_1brel"]
 [ext_resource type="Texture2D" uid="uid://bsgwvq8a2u231" path="res://assets/Enemies/FastEnemy/Dude_Monster_Hurt_4.png" id="3_6d6pp"]
+[ext_resource type="Texture2D" uid="uid://cg40uii5tq83q" path="res://assets/Enemies/MeleeEnemy/Walk_Run_Push_Dust_6.png" id="3_536wh"]
 [ext_resource type="Texture2D" uid="uid://bpr4dkio13lqi" path="res://assets/Enemies/FastEnemy/Dude_Monster_Death_8.png" id="3_sl6h4"]
 [ext_resource type="Texture2D" uid="uid://d4mbrnnfgus68" path="res://assets/Enemies/FastEnemy/Dude_Monster_Run_6.png" id="5_sl6h4"]
 
@@ -39,6 +40,30 @@ region = Rect2(192, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_fpuf0"]
 atlas = ExtResource("3_sl6h4")
 region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_syc2a"]
+atlas = ExtResource("3_536wh")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cuq0w"]
+atlas = ExtResource("3_536wh")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swgei"]
+atlas = ExtResource("3_536wh")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7w2w"]
+atlas = ExtResource("3_536wh")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aor7u"]
+atlas = ExtResource("3_536wh")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i66ka"]
+atlas = ExtResource("3_536wh")
+region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_536wh"]
 atlas = ExtResource("3_6d6pp")
@@ -124,8 +149,31 @@ animations = [{
 "texture": SubResource("AtlasTexture_fpuf0")
 }],
 "loop": true,
-"name": &"death",
+"name": &"Death",
 "speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_syc2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cuq0w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swgei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e7w2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aor7u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i66ka")
+}],
+"loop": true,
+"name": &"Dust",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -141,7 +189,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_n6ujq")
 }],
 "loop": true,
-"name": &"hurt",
+"name": &"Hurt",
 "speed": 8.0
 }, {
 "frames": [{
@@ -158,7 +206,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_6d6pp")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"Idle",
 "speed": 10.0
 }, {
 "frames": [{
@@ -181,7 +229,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_u6kay")
 }],
 "loop": true,
-"name": &"run",
+"name": &"Run",
 "speed": 20.0
 }]
 
@@ -189,8 +237,8 @@ animations = [{
 radius = 12.0
 
 [node name="FastEnemy" type="CharacterBody2D"]
-collision_layer = 4
-collision_mask = 3
+collision_layer = 8
+collision_mask = 4
 script = ExtResource("1_fast")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -199,11 +247,10 @@ shape = SubResource("CircleShape2D_fast")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(0, 0, 1, 1)
 sprite_frames = SubResource("SpriteFrames_4eaym")
-animation = &"death"
-frame_progress = 0.268175
+animation = &"Idle"
 
 [node name="HitBox" type="Area2D" parent="."]
-collision_layer = 4
+collision_layer = 8
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
