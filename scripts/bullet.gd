@@ -12,7 +12,7 @@ func _ready():
 	timer.timeout.connect(_on_lifetime_timeout)
 	
 	rotation = direction.angle()
-
+	
 func _physics_process(delta):
 	position += direction * speed * delta
 

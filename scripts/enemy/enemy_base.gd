@@ -200,12 +200,16 @@ func die():
 	is_dead = true
 	change_state(EnemyState.DEATH)
 	collision_shape.set_deferred("disabled", true)
+	if hitbox:
+		hitbox.set_deferred("monitoring", false)
+		hitbox.set_deferred("monitorable", false)
 	
+	enemy_died.emit(self)
+	if GameScene:
+		GameScene.add_score(points_value)
 	if animated_sprite.sprite_frames.has_animation("Death"):
 		animated_sprite.play("Death")
 		await animated_sprite.animation_finished
-	
-	enemy_died.emit(self)
 	queue_free()
 
 func _on_hitbox_body_entered(body):

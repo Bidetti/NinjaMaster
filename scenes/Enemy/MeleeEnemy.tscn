@@ -179,7 +179,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ym0kq")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack1",
 "speed": 10.0
 }, {
@@ -202,7 +202,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tqinf")
 }],
-"loop": true,
+"loop": false,
 "name": &"AttackRun",
 "speed": 10.0
 }, {
@@ -231,7 +231,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_woama")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
 "speed": 6.0
 }, {
@@ -248,7 +248,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ffg88")
 }],
-"loop": true,
+"loop": false,
 "name": &"Hurt",
 "speed": 8.0
 }, {
@@ -265,7 +265,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_v8h4l")
 }],
-"loop": true,
+"loop": false,
 "name": &"Idle",
 "speed": 8.0
 }, {
@@ -288,7 +288,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_55nim")
 }],
-"loop": true,
+"loop": false,
 "name": &"Run",
 "speed": 10.0
 }, {
@@ -311,7 +311,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ilw8y")
 }],
-"loop": true,
+"loop": false,
 "name": &"Walk",
 "speed": 10.0
 }]
@@ -329,7 +329,7 @@ shape = SubResource("CircleShape2D_melee")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_vd42g")
-animation = &"Run"
+animation = &"Walk"
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 8

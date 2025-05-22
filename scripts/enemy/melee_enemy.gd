@@ -105,3 +105,8 @@ func update_sprite_direction(direction: Vector2):
 func enter_hurt_state():
 	super.enter_hurt_state()
 	attack_timer = max(attack_timer, 0.5)
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if $AnimatedSprite2D.animation == "Death":
+		queue_free()

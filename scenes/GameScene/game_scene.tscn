@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=4 uid="uid://tidc6gxux4jr"]
+[gd_scene load_steps=13 format=4 uid="uid://tidc6gxux4jr"]
 
 [ext_resource type="Script" uid="uid://dgyk61mns1qq2" path="res://scripts/game_scene.gd" id="1_ecvex"]
 [ext_resource type="PackedScene" uid="uid://eflvwjlwf3nu" path="res://scenes/Player.tscn" id="1_onf2v"]
 [ext_resource type="Texture2D" uid="uid://duwntg4lmyjoc" path="res://assets/Tilesets/TilesetFloor.png" id="1_xougl"]
 [ext_resource type="Texture2D" uid="uid://cpr5j1ayoc8tm" path="res://assets/Tilesets/TilesetNature.png" id="2_6ynty"]
 [ext_resource type="Texture2D" uid="uid://cb2ek7o5onxcl" path="res://assets/Tilesets/TilesetReliefDetail.png" id="2_wo00q"]
-[ext_resource type="Script" uid="uid://cotqwakov2l4g" path="res://scripts/scene_entrance.gd" id="4_e2ns8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6ynty"]
 texture = ExtResource("1_xougl")
@@ -1448,9 +1447,6 @@ physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_e2ns8")
 sources/0 = SubResource("TileSetAtlasSource_5b1ro")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wo00q"]
-size = Vector2(22, 23)
-
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_ecvex")
 
@@ -1472,16 +1468,3 @@ y_sort_enabled = true
 
 [node name="Camera2D" type="Camera2D" parent="ObstacleLayer/Player"]
 zoom = Vector2(3, 3)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="ObstacleLayer"]
-collision_mask = 0
-
-[node name="SceneEntrance" type="Area2D" parent="."]
-script = ExtResource("4_e2ns8")
-next_scene = "res://GameScene/dungeon_scene.tscn"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SceneEntrance"]
-position = Vector2(184, -129.5)
-shape = SubResource("RectangleShape2D_wo00q")
-
-[connection signal="body_entered" from="SceneEntrance" to="SceneEntrance" method="_on_body_entered"]

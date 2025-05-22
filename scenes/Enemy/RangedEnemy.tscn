@@ -131,7 +131,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tehhw")
 }],
-"loop": true,
+"loop": false,
 "name": &"Aim",
 "speed": 5.0
 }, {
@@ -160,7 +160,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8f1gr")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
 "speed": 6.0
 }, {
@@ -177,7 +177,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_spnp4")
 }],
-"loop": true,
+"loop": false,
 "name": &"Hurt",
 "speed": 8.0
 }, {
@@ -194,7 +194,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tcttq")
 }],
-"loop": true,
+"loop": false,
 "name": &"Idle",
 "speed": 8.0
 }, {
@@ -211,7 +211,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qmwxo")
 }],
-"loop": true,
+"loop": false,
 "name": &"Throw",
 "speed": 10.0
 }, {
@@ -234,7 +234,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dboyc")
 }],
-"loop": true,
+"loop": false,
 "name": &"Walk",
 "speed": 10.0
 }]
@@ -253,7 +253,7 @@ shape = SubResource("CircleShape2D_ranged")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(0, 1, 0, 1)
 sprite_frames = SubResource("SpriteFrames_tqmab")
-animation = &"Aim"
+animation = &"Walk"
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 4

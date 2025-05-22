@@ -2119,7 +2119,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_difmb")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_ATTACK",
 "speed": 5.0
 }, {
@@ -2148,7 +2148,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_628te")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_DEATH",
 "speed": 5.0
 }, {
@@ -2177,7 +2177,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gv3ic")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_IDLE",
 "speed": 5.0
 }, {
@@ -2206,7 +2206,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7x34y")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_RELOADING",
 "speed": 5.0
 }, {
@@ -2235,7 +2235,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5dwh2")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_RUN",
 "speed": 5.0
 }, {
@@ -2264,7 +2264,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7al30")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -2293,7 +2293,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ku51j")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_WALK",
 "speed": 10.0
 }, {
@@ -2322,7 +2322,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vv5rt")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -2351,7 +2351,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6xcpi")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -2380,7 +2380,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_h22a3")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_ATTACK",
 "speed": 5.0
 }, {
@@ -2409,7 +2409,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1qwah")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_ATTACK",
 "speed": 5.0
 }, {
@@ -2438,7 +2438,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_x25d1")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_DEATH",
 "speed": 5.0
 }, {
@@ -2467,7 +2467,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pfeki")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_IDLE",
 "speed": 5.0
 }, {
@@ -2496,7 +2496,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kmhil")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_RELOADING",
 "speed": 5.0
 }, {
@@ -2525,7 +2525,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u2xao")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_RUN",
 "speed": 5.0
 }, {
@@ -2554,7 +2554,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_twbbq")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -2583,7 +2583,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_p0eor")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_WALK",
 "speed": 10.0
 }, {
@@ -2612,7 +2612,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hhw4q")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -2641,7 +2641,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jwocw")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -2670,7 +2670,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_66845")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_RUN",
 "speed": 5.0
 }, {
@@ -2699,7 +2699,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3sjc0")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -2728,7 +2728,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5qf32")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_ATTACK",
 "speed": 5.0
 }, {
@@ -2757,7 +2757,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g2j7s")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_DEATH",
 "speed": 5.0
 }, {
@@ -2786,7 +2786,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_b1r6t")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_IDLE",
 "speed": 5.0
 }, {
@@ -2815,7 +2815,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_igly5")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_RELOADING",
 "speed": 5.0
 }, {
@@ -2844,7 +2844,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dbelm")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_RUN",
 "speed": 5.0
 }, {
@@ -2873,7 +2873,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dw6f1")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -2902,7 +2902,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2viqe")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_WALK",
 "speed": 10.0
 }, {
@@ -2931,7 +2931,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n4u1a")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -2960,7 +2960,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_j70s6")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -2989,7 +2989,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dbss2")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -3018,7 +3018,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vbxaw")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -3047,7 +3047,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_16erx")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_ATTACK",
 "speed": 5.0
 }, {
@@ -3076,7 +3076,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ype7c")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_ATTACK",
 "speed": 5.0
 }, {
@@ -3105,7 +3105,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bm5g1")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_DEATH",
 "speed": 5.0
 }, {
@@ -3134,7 +3134,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qv10x")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_IDLE",
 "speed": 5.0
 }, {
@@ -3163,7 +3163,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bqjf7")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_RELOADING",
 "speed": 5.0
 }, {
@@ -3192,7 +3192,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_otxvx")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_RUN",
 "speed": 5.0
 }, {
@@ -3221,7 +3221,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_v5uqr")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -3250,7 +3250,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bqny8")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_WALK",
 "speed": 10.0
 }, {
@@ -3279,7 +3279,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ioseb")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -3308,7 +3308,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yrer8")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -3337,7 +3337,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_087r3")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_RUN",
 "speed": 5.0
 }, {
@@ -3366,7 +3366,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7iq4c")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -3395,7 +3395,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dlpnu")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_ATTACK",
 "speed": 5.0
 }, {
@@ -3424,7 +3424,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qdid1")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_DEATH",
 "speed": 5.0
 }, {
@@ -3453,7 +3453,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_100hb")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_IDLE",
 "speed": 5.0
 }, {
@@ -3482,7 +3482,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_prefr")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_RELOADING",
 "speed": 5.0
 }, {
@@ -3511,7 +3511,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ys731")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_RUN",
 "speed": 5.0
 }, {
@@ -3540,7 +3540,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sp153")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -3569,7 +3569,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i5kac")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_WALK",
 "speed": 10.0
 }, {
@@ -3598,7 +3598,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_px66q")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -3627,7 +3627,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_raxty")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -3656,7 +3656,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2bsms")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -3685,7 +3685,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0tit5")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_WALK_SHOOTING",
 "speed": 5.0
 }, {
@@ -3714,7 +3714,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t5xgy")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_ATTACK",
 "speed": 5.0
 }, {
@@ -3743,7 +3743,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pe5el")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_DEATH",
 "speed": 5.0
 }, {
@@ -3772,7 +3772,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mdclj")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_IDLE",
 "speed": 5.0
 }, {
@@ -3801,7 +3801,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cjqfx")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_RELOADING",
 "speed": 5.0
 }, {
@@ -3830,7 +3830,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gnkgc")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_RUN_SHOOTING",
 "speed": 5.0
 }, {
@@ -3859,7 +3859,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1lbfo")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_WALK",
 "speed": 5.0
 }, {
@@ -3888,7 +3888,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_74ix4")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_WALK_RELOADING",
 "speed": 5.0
 }, {
@@ -3917,7 +3917,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gdraj")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_WALK_SHOOTING",
 "speed": 5.0
 }]
@@ -4355,7 +4355,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-collision_layer = 2
+collision_layer = 3
 script = ExtResource("1_cw2d6")
 bullet = ExtResource("2_srp4u")
 
@@ -4364,7 +4364,7 @@ shape = SubResource("CircleShape2D_p7iby")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_oanc2")
-animation = &"GUN_UP_WALK_RELOADING"
+animation = &"GUN_DOWN_ATTACK"
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 0

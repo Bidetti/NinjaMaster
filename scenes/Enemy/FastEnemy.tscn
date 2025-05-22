@@ -148,7 +148,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fpuf0")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
 "speed": 6.0
 }, {
@@ -171,7 +171,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i66ka")
 }],
-"loop": true,
+"loop": false,
 "name": &"Dust",
 "speed": 5.0
 }, {
@@ -188,7 +188,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n6ujq")
 }],
-"loop": true,
+"loop": false,
 "name": &"Hurt",
 "speed": 8.0
 }, {
@@ -228,7 +228,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u6kay")
 }],
-"loop": true,
+"loop": false,
 "name": &"Run",
 "speed": 20.0
 }]
@@ -247,7 +247,7 @@ shape = SubResource("CircleShape2D_fast")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(0, 0, 1, 1)
 sprite_frames = SubResource("SpriteFrames_4eaym")
-animation = &"Idle"
+animation = &"Run"
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 8
