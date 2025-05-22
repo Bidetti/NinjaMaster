@@ -4,30 +4,36 @@ class_name Player
 var move_speed: float = 100
 var sprint_speed: float = 150
 
-var ammo: int = 30
-var max_ammo: int = 30
-var is_reloading: bool = false
-var can_shoot: bool = true
-
 var attack_animation_timer: float = 0.0
 var attack_animation_duration: float = 0.3
 
 enum Direction { RIGHT, LEFT }
 enum VerticalAim { UP, DOWN }
-enum ActionState { IDLE, ATTACK, RELOADING, RUN, WALK, RUN_SHOOTING, WALK_SHOOTING, DEATH }
+enum ActionState { 
+	IDLE, ATTACK, RELOADING, RUN, WALK, 
+	RUN_SHOOTING, WALK_SHOOTING, WALK_RELOADING, 
+	RUN_RELOADING, DEATH 
+}
 
 var current_direction: int = Direction.RIGHT
 var current_vertical_aim: int = VerticalAim.DOWN
 var current_action: int = ActionState.IDLE
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var death_shadow: AnimatedSprite2D = $DeathShadow
 @onready var gun = $Gun
-@onready var bullet_spawn = $Gun/BulletSpawn
-@onready var reload_timer = $Gun/ReloadTimer
-@onready var shoot_timer = $Gun/ShootTimer
 @onready var audio_player = $AudioStreamPlayer2D
 
 @export var bullet: PackedScene
+
+func _ready():
+	update_hp_bar()
+	
+	gun.ammo_changed.connect(_on_ammo_changed)
+	gun.started_reloading.connect(_on_started_reloading)
+	gun.finished_reloading.connect(_on_finished_reloading)
+	
+	gun.bullet_scene = bullet
 
 func _process(delta):
 	if GameScene.player_hp <= 0:
@@ -42,7 +48,7 @@ func _process(delta):
 	_update_state()
 	update_animation()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	move_and_slide()
 
 func _handle_input():
@@ -52,19 +58,13 @@ func _handle_input():
 	velocity = move_vector * current_speed
 	
 	var mouse_pos = get_global_mouse_position()
-	if mouse_pos.x > global_position.x:
-		current_direction = Direction.RIGHT
-	else:
-		current_direction = Direction.LEFT
+	current_direction = Direction.RIGHT if mouse_pos.x > global_position.x else Direction.LEFT
 	
 	var angle = global_position.angle_to_point(mouse_pos)
-	if angle < 0:
-		current_vertical_aim = VerticalAim.UP
-	else:
-		current_vertical_aim = VerticalAim.DOWN
+	current_vertical_aim = VerticalAim.UP if angle < 0 else VerticalAim.DOWN
 	
 	if Input.is_action_pressed("shoot"):
-		var shoot_direction = (get_global_mouse_position() - global_position).normalized()
+		var shoot_direction = (mouse_pos - global_position).normalized()
 		var shot_fired = gun.shoot(shoot_direction)
 		
 		if shot_fired:
@@ -76,133 +76,144 @@ func _handle_input():
 func _update_state():
 	if current_action == ActionState.DEATH:
 		return
-		
+	
+	var is_moving = velocity.length() > 0
+	var is_sprinting = velocity.length() >= sprint_speed * 0.8
+	var is_shooting = Input.is_action_pressed("shoot") && gun.can_shoot && gun.ammo > 0
+	
 	if gun.is_reloading:
-		current_action = ActionState.RELOADING
+		if is_moving:
+			if velocity.length() >= sprint_speed * 0.8:
+				current_action = ActionState.RUN_RELOADING
+			else:
+				current_action = ActionState.WALK_RELOADING
+		else:
+			current_action = ActionState.RELOADING
 		return
 	
-	# Dar prioridade à animação de tiro se o timer estiver ativo
 	if attack_animation_timer > 0:
-		if velocity.length() > 0:
-			if velocity.length() >= sprint_speed * 0.8:
-				current_action = ActionState.RUN_SHOOTING
-			else:
-				current_action = ActionState.WALK_SHOOTING
+		if is_moving:
+			current_action = ActionState.RUN_SHOOTING if is_sprinting else ActionState.WALK_SHOOTING
 		else:
 			current_action = ActionState.ATTACK
 		return
-		
-	if velocity.length() > 0:
-		if velocity.length() >= sprint_speed * 0.8:
-			if Input.is_action_pressed("shoot"):
-				current_action = ActionState.RUN_SHOOTING
-			else:
-				current_action = ActionState.RUN
+	
+	if is_moving:
+		if is_sprinting:
+			current_action = ActionState.RUN_SHOOTING if is_shooting else ActionState.RUN
 		else:
-			if Input.is_action_pressed("shoot"):
-				current_action = ActionState.WALK_SHOOTING
-			else:
-				current_action = ActionState.WALK
+			current_action = ActionState.WALK_SHOOTING if is_shooting else ActionState.WALK
 	else:
-		if Input.is_action_pressed("shoot") and gun.can_shoot and gun.ammo > 0:
-			current_action = ActionState.ATTACK
-		else:
-			current_action = ActionState.IDLE
+		current_action = ActionState.ATTACK if is_shooting else ActionState.IDLE
 
 func update_animation():
-	var animation_name = "GUN_"
+	var animation_prefix = "GUN_"
+	var direction_part = ""
+	var action_part = ""
+	
 	if current_direction == Direction.RIGHT:
-		if current_vertical_aim == VerticalAim.UP:
-			animation_name += "RIGHT_UP_"
-		else:
-			animation_name += "RIGHT_DOWN_"
+		direction_part = "RIGHT_" + ("UP_" if current_vertical_aim == VerticalAim.UP else "DOWN_")
 	else:
-		if current_vertical_aim == VerticalAim.UP:
-			animation_name += "LEFT_UP_"
-		else:
-			animation_name += "LEFT_DOWN_"
+		direction_part = "LEFT_" + ("UP_" if current_vertical_aim == VerticalAim.UP else "DOWN_")
 	
 	match current_action:
 		ActionState.IDLE:
-			animation_name += "IDLE"
+			action_part = "IDLE"
 		ActionState.ATTACK:
-			animation_name += "ATTACK"
+			action_part = "ATTACK"
 		ActionState.RELOADING:
-			animation_name += "RELOADING"
+			action_part = "RELOADING"
 		ActionState.RUN:
-			animation_name += "RUN"
+			action_part = "RUN"
 		ActionState.WALK:
-			animation_name += "WALK"
+			action_part = "WALK"
 		ActionState.RUN_SHOOTING:
-			animation_name += "RUN_SHOOTING"
+			action_part = "RUN_SHOOTING"
 		ActionState.WALK_SHOOTING:
-			animation_name += "WALK_SHOOTING"
+			action_part = "WALK_SHOOTING"
+		ActionState.WALK_RELOADING, ActionState.RUN_RELOADING:
+			action_part = "WALK_RELOADING"
 		ActionState.DEATH:
-			animation_name += "DEATH"
+			action_part = "DEATH"
+	
+	var animation_name = animation_prefix + direction_part + action_part
 	
 	if animated_sprite.sprite_frames.has_animation(animation_name):
 		animated_sprite.play(animation_name)
 	else:
 		var fallback_name = "GUN_RIGHT_DOWN_IDLE"
-		
 		if animated_sprite.sprite_frames.has_animation(fallback_name):
 			animated_sprite.play(fallback_name)
 		else:
-			print("Animação não encontrada: ", animation_name, " e fallback também não encontrado: ", fallback_name)
+			print("Animation not found: ", animation_name, " and fallback also not found: ", fallback_name)
 	
 	update_gun_position()
 
 func update_gun_position():
 	if current_direction == Direction.RIGHT:
 		gun.scale.x = 1
-		if current_vertical_aim == VerticalAim.UP:
-			gun.rotation_degrees = -45
-		else:
-			gun.rotation_degrees = 45
+		gun.rotation_degrees = -45 if current_vertical_aim == VerticalAim.UP else 45
 	else:
 		gun.scale.x = -1
-		if current_vertical_aim == VerticalAim.UP:
-			gun.rotation_degrees = -135
-		else:
-			gun.rotation_degrees = 135
+		gun.rotation_degrees = -135 if current_vertical_aim == VerticalAim.UP else 135
 
 func _on_hitbox_area_2d_body_entered(body: Node2D) -> void:
 	if body is Enemy:
 		GameScene.player_hp -= 1
 		update_hp_bar()
-	if GameScene.player_hp <= 0:
-		die()
+		if GameScene.player_hp <= 0:
+			die()
 
 func die():
 	current_action = ActionState.DEATH
+	death_shadow.visible = true
+	var shadow_anim = "GUN_"
+	if current_direction == Direction.RIGHT:
+		shadow_anim += "RIGHT_"
+	else:
+		shadow_anim += "LEFT_"
+	if current_vertical_aim == VerticalAim.UP:
+		shadow_anim += "UP_"
+	else:
+		shadow_anim += "DOWN_"
+
+	shadow_anim += "DEATH"
+	death_shadow.play(shadow_anim)
 	update_animation()
 	await animated_sprite.animation_finished
+	await death_shadow.animation_finished
 	GameScene.player_hp = 4
 	get_tree().call_deferred("reload_current_scene")
 
-func _ready():
-	update_hp_bar()
-	
-	gun.ammo_changed.connect(func(current, maximum): 
-		# atualizar a UI de munição
-		pass
-	)
-	
-	gun.started_reloading.connect(func():
-		# Animação ou efeito de início de recarga
-		pass
-	)
-	
-	gun.finished_reloading.connect(func():
-		# Animação ou efeito de fim de recarga
-		pass
-	)
-	
-	gun.bullet_scene = bullet
-	
 func update_hp_bar():
 	var hp_animation = str(min(GameScene.player_hp, 4)) + "_hp"
 	if %HPBar.sprite_frames.has_animation(hp_animation):
 		%HPBar.play(hp_animation)
 	else:
-		print("Animação de HP não encontrada: ", hp_animation)
+		print("HP animation not found: ", hp_animation)
+
+func _on_ammo_changed(current, maximum):
+	if !$CanvasLayer.has_node("AmmoCounter"):
+		var ammo_label = Label.new()
+		ammo_label.name = "AmmoCounter"
+		ammo_label.add_theme_font_size_override("font_size", 24)
+		ammo_label.position = Vector2(150, 58)
+		$CanvasLayer.add_child(ammo_label)
+	
+	$CanvasLayer/AmmoCounter.text = str(current) + "/" + str(maximum)
+
+func _on_started_reloading():
+	if audio_player and audio_player.stream:
+		#audio_player.stream = preload("res://path_to_reload_sound.wav")
+		audio_player.play()
+	
+	if $CanvasLayer.has_node("AmmoCounter"):
+		$CanvasLayer/AmmoCounter.modulate = Color(1.0, 0.5, 0.0)
+
+func _on_finished_reloading():
+	if audio_player and audio_player.stream:
+		#audio_player.stream = preload("res://path_to_reload_complete_sound.wav")
+		audio_player.play()
+	
+	if $CanvasLayer.has_node("AmmoCounter"):
+		$CanvasLayer/AmmoCounter.modulate = Color(1.0, 1.0, 1.0)

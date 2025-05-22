@@ -25,11 +25,19 @@ func _ready():
 	emit_signal("ammo_changed", ammo, max_ammo)
 
 func shoot(direction: Vector2):
-	if ammo <= 0 or !can_shoot or is_reloading:
+	if is_reloading:
+		return false
+		
+	if ammo <= 0:
+		# Somente sugerir recarga quando vazio, mas não fazer automaticamente
+		emit_signal("ammo_changed", ammo, max_ammo)
+		return false
+		
+	if !can_shoot:
 		return false
 		
 	if bullet_scene == null:
-		print("ERRO: Cena Bullet não foi configurada no Gun!")
+		push_error("ERROR: Bullet scene not configured in Gun!")
 		return false
 		
 	var bullet = bullet_scene.instantiate()
