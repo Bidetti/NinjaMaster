@@ -6,6 +6,8 @@ var sprint_speed: float = 150
 
 var attack_animation_timer: float = 0.0
 var attack_animation_duration: float = 0.3
+var invulnerability_time: float = 1.0
+var invulnerable_timer: float = 0.0
 
 enum Direction { RIGHT, LEFT }
 enum VerticalAim { UP, DOWN }
@@ -23,6 +25,7 @@ var current_action: int = ActionState.IDLE
 @onready var death_shadow: AnimatedSprite2D = $DeathShadow
 @onready var gun = $Gun
 @onready var audio_player = $AudioStreamPlayer2D
+@onready var hitbox: Area2D = $HitBox
 
 @export var bullet: PackedScene
 
@@ -34,6 +37,10 @@ func _ready():
 	gun.finished_reloading.connect(_on_finished_reloading)
 	
 	gun.bullet_scene = bullet
+	
+	if hitbox:
+		hitbox.body_entered.connect(_on_hitbox_body_entered)
+		hitbox.area_entered.connect(_on_hitbox_area_entered)
 
 func _process(delta):
 	if GameScene.player_hp <= 0:
@@ -43,6 +50,13 @@ func _process(delta):
 	
 	if attack_animation_timer > 0:
 		attack_animation_timer -= delta
+	
+	if invulnerable_timer > 0:
+		invulnerable_timer -= delta
+		var frame_count = Engine.get_process_frames()
+		modulate.a = 0.5 if (frame_count % 10) < 5 else 1.0
+	else:
+		modulate.a = 1.0
 	
 	_handle_input()
 	_update_state()
@@ -157,12 +171,29 @@ func update_gun_position():
 		gun.scale.x = -1
 		gun.rotation_degrees = -135 if current_vertical_aim == VerticalAim.UP else 135
 
-func _on_hitbox_area_2d_body_entered(body: Node2D) -> void:
-	if body is Enemy:
-		GameScene.player_hp -= 1
-		update_hp_bar()
-		if GameScene.player_hp <= 0:
-			die()
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body is EnemyBase and invulnerable_timer <= 0:
+		take_damage(body.damage)
+
+func _on_hitbox_area_entered(area: Node2D) -> void:
+	if area is EnemyProjectile and invulnerable_timer <= 0:
+		take_damage(area.damage)
+
+func take_damage(amount: int):
+	if invulnerable_timer > 0:
+		return
+	
+	GameScene.player_hp -= amount
+	update_hp_bar()
+	invulnerable_timer = invulnerability_time
+	
+	if audio_player:
+		# audio_player.stream = preload("res://path_to_hurt_sound.wav")
+		# audio_player.play()
+		pass
+	
+	if GameScene.player_hp <= 0:
+		die()
 
 func die():
 	current_action = ActionState.DEATH

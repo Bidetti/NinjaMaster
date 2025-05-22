@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3nak5hx2y8e4"]
+
+[ext_resource type="Script" uid="uid://is705t3qchc" path="res://scripts/enemy/fast_enemy.gd" id="1_fast"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fast"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fast_hitbox"]
+radius = 12.0
+
+[node name="FastEnemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_fast")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_fast")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0, 0, 1, 1)
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_fast_hitbox")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="body_entered" from="HitBox" to="." method="_on_hitbox_body_entered"]

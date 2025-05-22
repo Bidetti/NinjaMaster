@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8614lpps5oe"]
+
+[ext_resource type="Script" uid="uid://ch1t0bhdjigxq" path="res://scripts/enemy/ranged_enemy.gd" id="1_ranged"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ranged"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ranged_hitbox"]
+radius = 16.0
+
+[node name="RangedEnemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_ranged")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ranged")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0, 1, 0, 1)
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_ranged_hitbox")
+
+[node name="ProjectileSpawn" type="Marker2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="body_entered" from="HitBox" to="." method="_on_hitbox_body_entered"]
