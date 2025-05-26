@@ -1,9 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfb836nrk37qg"]
+[gd_scene load_steps=6 format=3 uid="uid://cfb836nrk37qg"]
 
 [ext_resource type="Script" uid="uid://bg4rfspcohlb6" path="res://scripts/enemy/enemy_projectile.gd" id="1_projectile"]
+[ext_resource type="Texture2D" uid="uid://xaljbrjfyk7f" path="res://assets/Enemies/FastEnemy/Rock2.png" id="2_xwnto"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_projectile"]
 radius = 4.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxqu8"]
+atlas = ExtResource("2_xwnto")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_add7i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxqu8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="EnemyProjectile" type="Area2D"]
 collision_layer = 16
@@ -13,6 +29,7 @@ script = ExtResource("1_projectile")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_projectile")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_add7i")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

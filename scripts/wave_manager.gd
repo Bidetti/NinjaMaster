@@ -11,6 +11,7 @@ signal all_waves_completed
 @export var time_between_spawns: float = 0.5
 
 var current_wave: int = 0
+var max_waves: int = 1
 var enemies_alive: int = 0
 var wave_in_progress: bool = false
 var player_ref: Player
@@ -60,7 +61,6 @@ func _ready():
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	
 	wave_timer.wait_time = time_between_waves
-	wave_timer.timeout.connect(_on_wave_timer_timeout)
 	
 	if spawn_points.is_empty():
 		generate_spawn_points()
@@ -93,9 +93,8 @@ func start_next_wave():
 		return
 	
 	wave_in_progress = true
-	wave_started.emit(current_wave + 1)
-	
 	print("Iniciando onda ", current_wave + 1)
+	wave_started.emit(current_wave + 1)
 	
 	spawn_wave_enemies()
 
@@ -165,16 +164,18 @@ func _on_enemy_died(enemy):
 
 func complete_current_wave():
 	wave_in_progress = false
+	print("Onda ", current_wave + 1, " completada!")
 	wave_completed.emit(current_wave + 1)
 	
-	print("Onda ", current_wave + 1, " completada!")
+	await get_tree().create_timer(time_between_waves).timeout
 	
-	current_wave += 1
-	
-	wave_timer.start()
+	if current_wave + 1 < wave_configs.size():
+		current_wave += 1
+		start_next_wave()
+	else:
+		print("Todas as ondas completadas!")
+		all_waves_completed.emit()
 
-func _on_wave_timer_timeout():
-	start_next_wave()
 
 func _on_spawn_timer_timeout():
 	pass
