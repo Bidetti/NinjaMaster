@@ -4,12 +4,15 @@ class_name Player
 @export var move_speed: float = 100
 @export var sprint_speed: float = 150
 
-@export var invulnerability_time: float = 1.0
 @export var bullet: PackedScene
-
 var attack_animation_timer: float = 0.0
 var attack_animation_duration: float = 0.3
-var invulnerable_timer: float = 0.0
+var is_dead: bool = false
+
+var hurt_flash_timer: float = 0.0
+var hurt_flash_duration: float = 0.2
+var hurt_flash_interval: float = 0.05
+var is_flashing: bool = false
 
 enum Direction { RIGHT, LEFT }
 enum VerticalAim { UP, DOWN }
@@ -51,31 +54,54 @@ func setup_connections():
 		GameScene.player_hp_changed.connect(_on_player_hp_changed)
 
 func _process(delta):
+	if is_dead:
+		return
+		
 	if GameScene.player_hp <= 0:
 		handle_death_state()
 		return
 	
 	update_timers(delta)
+	update_hurt_flash(delta)
 	handle_input()
 	update_state()
 	update_animation()
 
 func _physics_process(_delta):
+	if is_dead:
+		return
 	move_and_slide()
 
 func update_timers(delta):
 	if attack_animation_timer > 0:
 		attack_animation_timer -= delta
-	
-	if invulnerable_timer > 0:
-		invulnerable_timer -= delta
-		handle_invulnerability_effect()
-	else:
-		modulate.a = 1.0
 
-func handle_invulnerability_effect():
-	var frame_count = Engine.get_process_frames()
-	modulate.a = 0.5 if (frame_count % 10) < 5 else 1.0
+func update_hurt_flash(delta):
+	if hurt_flash_timer > 0:
+		hurt_flash_timer -= delta
+		
+		var flash_cycle = fmod(hurt_flash_timer, hurt_flash_interval * 2)
+		var should_be_red = flash_cycle > hurt_flash_interval
+		
+		if should_be_red:
+			animated_sprite.modulate = Color(1.5, 0.3, 0.3, 1.0)
+			gun.modulate = Color(1.5, 0.3, 0.3, 1.0)
+		else:
+			animated_sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+			gun.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		
+		is_flashing = true
+	else:
+		if is_flashing:
+			# Finalizar o efeito e restaurar a cor normal
+			animated_sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+			gun.modulate = Color(1.0, 1.0, 1.0, 1.0)
+			is_flashing = false
+
+
+func start_hurt_flash():
+	hurt_flash_timer = hurt_flash_duration
+	is_flashing = true
 
 func handle_input():
 	handle_movement_input()
@@ -226,10 +252,12 @@ func update_gun_position():
 		gun.rotation_degrees = -135 if current_vertical_aim == VerticalAim.UP else 135
 
 func handle_death_state():
+	is_dead = true
 	current_action = ActionState.DEATH
 	death_shadow.visible = true
 	play_death_animation()
 	update_animation()
+	show_restart_button()
 
 func play_death_animation():
 	var shadow_anim = build_death_animation_name()
@@ -241,42 +269,98 @@ func build_death_animation_name() -> String:
 	var vertical = "UP_" if current_vertical_aim == VerticalAim.UP else "DOWN_"
 	return prefix + direction + vertical + "DEATH"
 
+func show_restart_button():
+	var restart_button = Button.new()
+	restart_button.text = "REINICIAR"
+	restart_button.name = "RestartButton"
+	
+	restart_button.add_theme_font_size_override("font_size", 32)
+	restart_button.add_theme_color_override("font_color", Color.WHITE)
+	restart_button.add_theme_color_override("font_color_hover", Color.YELLOW)
+	restart_button.add_theme_color_override("font_color_pressed", Color.RED)
+	
+	var style_normal = StyleBoxFlat.new()
+	style_normal.bg_color = Color(0.2, 0.2, 0.2, 0.8)
+	style_normal.border_width_left = 3
+	style_normal.border_width_right = 3
+	style_normal.border_width_top = 3
+	style_normal.border_width_bottom = 3
+	style_normal.border_color = Color.WHITE
+	style_normal.corner_radius_top_left = 10
+	style_normal.corner_radius_top_right = 10
+	style_normal.corner_radius_bottom_left = 10
+	style_normal.corner_radius_bottom_right = 10
+	
+	var style_hover = StyleBoxFlat.new()
+	style_hover.bg_color = Color(0.3, 0.3, 0.3, 0.9)
+	style_hover.border_width_left = 3
+	style_hover.border_width_right = 3
+	style_hover.border_width_top = 3
+	style_hover.border_width_bottom = 3
+	style_hover.border_color = Color.YELLOW
+	style_hover.corner_radius_top_left = 10
+	style_hover.corner_radius_top_right = 10
+	style_hover.corner_radius_bottom_left = 10
+	style_hover.corner_radius_bottom_right = 10
+	
+	var style_pressed = StyleBoxFlat.new()
+	style_pressed.bg_color = Color(0.1, 0.1, 0.1, 0.9)
+	style_pressed.border_width_left = 3
+	style_pressed.border_width_right = 3
+	style_pressed.border_width_top = 3
+	style_pressed.border_width_bottom = 3
+	style_pressed.border_color = Color.RED
+	style_pressed.corner_radius_top_left = 10
+	style_pressed.corner_radius_top_right = 10
+	style_pressed.corner_radius_bottom_left = 10
+	style_pressed.corner_radius_bottom_right = 10
+	
+	restart_button.add_theme_stylebox_override("normal", style_normal)
+	restart_button.add_theme_stylebox_override("hover", style_hover)
+	restart_button.add_theme_stylebox_override("pressed", style_pressed)
+	
+	restart_button.size = Vector2(200, 60)
+	restart_button.position = Vector2(
+		(get_viewport().size.x - restart_button.size.x) / 2,
+		(get_viewport().size.y - restart_button.size.y) / 2
+	)
+	
+	restart_button.pressed.connect(_on_restart_button_pressed)
+	
+	$CanvasLayer.add_child(restart_button)
+
+func _on_restart_button_pressed():
+	restart_game()
+
+func restart_game():
+	GameScene.player_hp = 4
+	get_tree().call_deferred("reload_current_scene")
+
 func _on_hitbox_body_entered(body: Node2D) -> void:
-	if body is EnemyBase and invulnerable_timer <= 0:
+	if body is EnemyBase and not is_dead:
 		take_damage(body.damage)
 
 func _on_hitbox_area_entered(area: Node2D) -> void:
-	if area is EnemyProjectile and invulnerable_timer <= 0:
+	if area is EnemyProjectile and not is_dead:
 		take_damage(area.damage)
 
 func take_damage(amount: int):
-	if invulnerable_timer > 0:
+	if is_dead:
 		return
 	
 	GameScene.player_hp -= amount
-	invulnerable_timer = invulnerability_time
+	start_hurt_flash()
 	
 	play_hurt_sound()
 	
 	if GameScene.player_hp <= 0:
-		await die()
+		handle_death_state()
 
 func play_hurt_sound():
 	if audio_player:
 		# audio_player.stream = preload("res://path_to_hurt_sound.wav")
 		# audio_player.play()
 		pass
-
-func die():
-	current_action = ActionState.DEATH
-	await animated_sprite.animation_finished
-	await death_shadow.animation_finished
-	
-	respawn()
-
-func respawn():
-	GameScene.player_hp = 4
-	get_tree().call_deferred("reload_current_scene")
 
 func _on_player_hp_changed(new_hp: int):
 	update_hp_bar()
