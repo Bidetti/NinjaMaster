@@ -10,10 +10,11 @@ signal all_waves_completed
 @export var time_between_waves: float = 3.0
 @export var time_between_spawns: float = 0.3
 var current_wave: int = 0
-var max_waves: int = 50
+var max_waves: int = 3
 var enemies_alive: int = 0
 var wave_in_progress: bool = false
 var player_ref: Player
+var waves_started: bool = false
 
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var wave_timer: Timer = $WaveTimer
@@ -31,9 +32,12 @@ func _ready():
 	
 	if enemy_scenes.is_empty():
 		load_default_enemy_scenes()
-	
-	await get_tree().create_timer(2.0).timeout
-	start_next_wave()
+
+func start_waves():
+	if not waves_started:
+		waves_started = true
+		await get_tree().create_timer(2.0).timeout
+		start_next_wave()
 
 func generate_spawn_points():
 	var map_center = Vector2.ZERO
