@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=4 uid="uid://tidc6gxux4jr"]
+[gd_scene load_steps=13 format=4 uid="uid://tidc6gxux4jr"]
 
 [ext_resource type="Script" uid="uid://dgyk61mns1qq2" path="res://scripts/game_scene.gd" id="1_ecvex"]
 [ext_resource type="PackedScene" uid="uid://eflvwjlwf3nu" path="res://scenes/Player.tscn" id="1_onf2v"]
 [ext_resource type="Texture2D" uid="uid://duwntg4lmyjoc" path="res://assets/Tilesets/TilesetFloor.png" id="1_xougl"]
 [ext_resource type="Texture2D" uid="uid://cpr5j1ayoc8tm" path="res://assets/Tilesets/TilesetNature.png" id="2_6ynty"]
 [ext_resource type="Texture2D" uid="uid://cb2ek7o5onxcl" path="res://assets/Tilesets/TilesetReliefDetail.png" id="2_wo00q"]
-[ext_resource type="Script" uid="uid://cotqwakov2l4g" path="res://scripts/scene_entrance.gd" id="4_e2ns8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6ynty"]
 texture = ExtResource("1_xougl")
@@ -1053,9 +1052,9 @@ texture = ExtResource("2_wo00q")
 5:9/0 = 0
 0:7/size_in_atlas = Vector2i(3, 3)
 0:7/0 = 0
-0:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 13.3333, -18.6667, 13.3333, -18.6667, -8, -8, -8)
-0:7/0/physics_layer_0/polygon_1/points = PackedVector2Array(8, -8, 18.6667, -8, 18.6667, 13.3333, 8, 13.3333)
-0:7/0/physics_layer_0/polygon_2/points = PackedVector2Array(-13.3333, -13.3333, 13.3333, -13.3333, 13.3333, -8, -13.3333, -8)
+0:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-11.3311, 14.029, -18.6667, 13.3333, -18.6667, -8, -8, -8)
+0:7/0/physics_layer_0/polygon_1/points = PackedVector2Array(8, -8, 18.6667, -8, 18.6667, 13.3333, 12.77, 14.029)
+0:7/0/physics_layer_0/polygon_2/points = PackedVector2Array(-13.3333, -13.3333, 13.3333, -13.3333, 13.3333, -8, 0.359716, -10.7915, -13.3333, -8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e2ns8"]
 texture = ExtResource("2_6ynty")
@@ -1207,6 +1206,7 @@ texture = ExtResource("2_6ynty")
 19:7/0 = 0
 0:8/size_in_atlas = Vector2i(2, 2)
 0:8/0 = 0
+0:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10.2519, -4.85618, -12.4103, -1.25901, -11.8707, 3.0576, -9.71237, 5.93534, -5.75548, 8, -1.25901, 8, 5.75548, 8, 8, 8, 8, 5.2159, 9.89223, 2.15831, 10.2519, -2.51802, 8, -6.29505, 4.67633, -8, 0, -8, -5.39576, -8, -8, -8)
 2:8/0 = 0
 3:8/0 = 0
 4:8/0 = 0
@@ -1448,9 +1448,6 @@ physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_e2ns8")
 sources/0 = SubResource("TileSetAtlasSource_5b1ro")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wo00q"]
-size = Vector2(16, 16)
-
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_ecvex")
 
@@ -1472,13 +1469,3 @@ y_sort_enabled = true
 
 [node name="Camera2D" type="Camera2D" parent="ObstacleLayer/Player"]
 zoom = Vector2(3, 3)
-
-[node name="SceneEntrance" type="Area2D" parent="."]
-script = ExtResource("4_e2ns8")
-next_scene = "res://GameScene/dungeon_scene.tscn"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SceneEntrance"]
-position = Vector2(185, -130)
-shape = SubResource("RectangleShape2D_wo00q")
-
-[connection signal="body_entered" from="SceneEntrance" to="SceneEntrance" method="_on_body_entered"]
