@@ -9,7 +9,6 @@ signal all_waves_completed
 @export var spawn_points: Array[Vector2] = []
 @export var time_between_waves: float = 3.0
 @export var time_between_spawns: float = 0.3
-
 var current_wave: int = 0
 var max_waves: int = 50
 var enemies_alive: int = 0
@@ -48,8 +47,7 @@ func generate_spawn_points():
 func load_default_enemy_scenes():
 	enemy_scenes = [
 		preload("res://scenes/enemy/MeleeEnemy.tscn"),
-		preload("res://scenes/enemy/FastEnemy.tscn"),
-		preload("res://scenes/enemy/DashEnemy.tscn")
+		preload("res://scenes/enemy/FastEnemy.tscn")
 	]
 
 func generate_wave_config(wave_number: int) -> Dictionary:

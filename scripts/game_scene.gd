@@ -14,15 +14,15 @@ func setup_wave_manager():
 	add_child(wave_manager)
 	
 	wave_manager.spawn_points = [
-		Vector2(300, -200),   # Norte
-		Vector2(300, 200),    # Sul
-		Vector2(-300, -200),  # Noroeste
-		Vector2(-300, 200),   # Sudoeste
-		Vector2(500, 0),      # Leste
-		Vector2(-500, 0),     # Oeste
-		Vector2(0, -300),     # Norte centro
-		Vector2(0, 300)       # Sul centro
-	]
+        Vector2(150, -100),   # Norte
+        Vector2(150, 100),    # Sul
+        Vector2(-150, -100),  # Noroeste
+        Vector2(-150, 100),   # Sudoeste
+        Vector2(200, 0),      # Leste
+        Vector2(-200, 0),     # Oeste
+        Vector2(0, -150),     # Norte centro
+        Vector2(0, 150)       # Sul centro
+    ]
 	
 	wave_manager.wave_started.connect(_on_wave_started)
 	wave_manager.wave_completed.connect(_on_wave_completed)
