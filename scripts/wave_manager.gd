@@ -49,7 +49,7 @@ func load_default_enemy_scenes():
 	enemy_scenes = [
 		preload("res://scenes/enemy/MeleeEnemy.tscn"),
 		preload("res://scenes/enemy/FastEnemy.tscn"),
-		preload("res://scenes/enemy/RangedEnemy.tscn")
+		preload("res://scenes/enemy/DashEnemy.tscn")
 	]
 
 func generate_wave_config(wave_number: int) -> Dictionary:
