@@ -3920,6 +3920,11 @@ animations = [{
 "loop": false,
 "name": &"GUN_UP_WALK_SHOOTING",
 "speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bruh7"]
@@ -4204,7 +4209,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tjtt1")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_DOWN_DEATH",
 "speed": 5.0
 }, {
@@ -4233,7 +4238,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_iaac1")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_DOWN_DEATH",
 "speed": 5.0
 }, {
@@ -4262,7 +4267,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4noyx")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_LEFT_UP_DEATH",
 "speed": 5.0
 }, {
@@ -4291,7 +4296,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_eitk7")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_DOWN_DEATH",
 "speed": 5.0
 }, {
@@ -4320,7 +4325,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cdv3v")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_RIGHT_UP_DEATH",
 "speed": 5.0
 }, {
@@ -4349,7 +4354,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_05qoy")
 }],
-"loop": true,
+"loop": false,
 "name": &"GUN_UP_DEATH",
 "speed": 5.0
 }]
@@ -4364,7 +4369,7 @@ shape = SubResource("CircleShape2D_p7iby")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_oanc2")
-animation = &"GUN_DOWN_ATTACK"
+animation = &"new_animation"
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 0
@@ -4395,10 +4400,10 @@ wait_time = 0.05
 
 [node name="DeathShadow" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(0, -30)
+position = Vector2(0, 5)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_unhkg")
-animation = &"GUN_UP_DEATH"
+animation = &"GUN_DOWN_DEATH"
 
 [connection signal="timeout" from="Gun/ReloadTimer" to="Gun" method="_on_reload_timer_timeout"]
 [connection signal="timeout" from="Gun/ShootTimer" to="Gun" method="_on_shoot_timer_timeout"]
