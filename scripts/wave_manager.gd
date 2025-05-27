@@ -8,48 +8,13 @@ signal all_waves_completed
 @export var enemy_scenes: Array[PackedScene] = []
 @export var spawn_points: Array[Vector2] = []
 @export var time_between_waves: float = 3.0
-@export var time_between_spawns: float = 0.5
+@export var time_between_spawns: float = 0.3
 
 var current_wave: int = 0
-var max_waves: int = 1
+var max_waves: int = 50
 var enemies_alive: int = 0
 var wave_in_progress: bool = false
 var player_ref: Player
-
-var wave_configs = [
-	{
-		"enemies": [
-			{"type": 0, "count": 3}
-		]
-	},
-	{
-		"enemies": [
-			{"type": 0, "count": 4},
-			{"type": 1, "count": 2}
-		]
-	},
-	{
-		"enemies": [
-			{"type": 0, "count": 3},
-			{"type": 1, "count": 3},
-			{"type": 2, "count": 2}
-		]
-	},
-	{
-		"enemies": [
-			{"type": 0, "count": 5},
-			{"type": 1, "count": 4},
-			{"type": 2, "count": 3}
-		]
-	},
-	{
-		"enemies": [
-			{"type": 0, "count": 6},
-			{"type": 1, "count": 5},
-			{"type": 2, "count": 4}
-		]
-	}
-]
 
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var wave_timer: Timer = $WaveTimer
@@ -73,7 +38,7 @@ func _ready():
 
 func generate_spawn_points():
 	var map_center = Vector2.ZERO
-	var spawn_radius = 300.0
+	var spawn_radius = 25.0
 	
 	for i in range(8):
 		var angle = (i * TAU) / 8.0
@@ -87,8 +52,55 @@ func load_default_enemy_scenes():
 		preload("res://scenes/enemy/RangedEnemy.tscn")
 	]
 
+func generate_wave_config(wave_number: int) -> Dictionary:
+	var config = {"enemies": []}
+	
+	var difficulty_factor = 1.0 + (wave_number - 1) * 0.25
+	
+	var melee_count = max(3, int(5 + wave_number * 1.5))
+	var fast_count = max(0, int((wave_number - 1) * 1.2))
+	var ranged_count = max(0, int((wave_number - 2) * 0.8))
+	
+	if wave_number % 5 == 0:
+		melee_count += 4
+		fast_count += 3
+		ranged_count += 2
+	
+	if wave_number % 10 == 0:
+		melee_count += 6
+		fast_count += 4
+		ranged_count += 3
+	
+	melee_count = min(melee_count, 25)  # Era 15
+	fast_count = min(fast_count, 20)   # Era 12
+	ranged_count = min(ranged_count, 15) # Era 10
+	
+	if wave_number >= 20:
+		melee_count += 2
+		fast_count += 1
+		ranged_count += 1
+	
+	if wave_number >= 30:
+		melee_count += 3
+		fast_count += 2
+		ranged_count += 2
+	
+	if wave_number >= 40:
+		melee_count += 4
+		fast_count += 3
+		ranged_count += 3
+	
+	if melee_count > 0:
+		config.enemies.append({"type": 0, "count": melee_count})
+	if fast_count > 0:
+		config.enemies.append({"type": 1, "count": fast_count})
+	if ranged_count > 0:
+		config.enemies.append({"type": 2, "count": ranged_count})
+	
+	return config
+
 func start_next_wave():
-	if current_wave >= wave_configs.size():
+	if current_wave >= max_waves:
 		all_waves_completed.emit()
 		return
 	
@@ -99,7 +111,7 @@ func start_next_wave():
 	spawn_wave_enemies()
 
 func spawn_wave_enemies():
-	var current_config = wave_configs[current_wave]
+	var current_config = generate_wave_config(current_wave + 1)
 	var enemies_to_spawn = []
 	
 	for enemy_config in current_config.enemies:
@@ -148,7 +160,7 @@ func get_random_spawn_point() -> Vector2:
 	for spawn_point in spawn_points:
 		if player_ref:
 			var distance = spawn_point.distance_to(player_ref.global_position)
-			if distance > 150.0:
+			if distance > 80.0:
 				valid_spawns.append(spawn_point)
 	
 	if valid_spawns.is_empty():
@@ -169,13 +181,12 @@ func complete_current_wave():
 	
 	await get_tree().create_timer(time_between_waves).timeout
 	
-	if current_wave + 1 < wave_configs.size():
+	if current_wave + 1 < max_waves:
 		current_wave += 1
 		start_next_wave()
 	else:
-		print("Todas as ondas completadas!")
+		print("Todas as ", max_waves, " ondas completadas!")
 		all_waves_completed.emit()
-
 
 func _on_spawn_timer_timeout():
 	pass

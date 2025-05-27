@@ -8,6 +8,7 @@ signal health_changed(current_hp, max_hp)
 @export var move_speed: float = 50
 @export var damage: int = 1
 @export var points_value: int = 10
+@export var detection_range: float = 20000.0
 
 enum EnemyState {
 	IDLE,
@@ -127,16 +128,25 @@ func get_distance_to_player() -> float:
 	return global_position.distance_to(player_ref.global_position)
 
 func should_start_pursuing(distance: float) -> bool:
-	return distance < 200.0
+	return distance < detection_range
 
 func should_continue_pursuing(distance: float) -> bool:
-	return distance < 250.0
+	return distance < (detection_range * 1.25)
 
 func should_attack(distance: float) -> bool:
 	return false
 
 func update_sprite_direction(direction: Vector2):
-	pass
+	if not animated_sprite:
+		return
+		
+	if abs(direction.x) > abs(direction.y):
+		if direction.x > 0:
+			animated_sprite.flip_h = false
+		else:
+			animated_sprite.flip_h = true
+	else:
+		pass
 
 func change_state(new_state: EnemyState):
 	if current_state == new_state:
@@ -214,4 +224,5 @@ func die():
 
 func _on_hitbox_body_entered(body):
 	if body is Player and not is_dead and current_state != EnemyState.HURT:
-		pass
+		if body.has_method("take_damage"):
+			body.take_damage(damage)

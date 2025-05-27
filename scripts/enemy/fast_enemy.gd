@@ -171,7 +171,7 @@ func update_sprite_direction(direction: Vector2):
 		return
 	
 	if direction.x != 0:
-		scale.x = abs(scale.x) if direction.x > 0 else -abs(scale.x)
+		animated_sprite.flip_h = direction.x < 0
 
 func take_damage(amount: int):
 	if fast_enemy_state == FastEnemyState.DASHING or fast_enemy_state == FastEnemyState.DASH_PREPARE:

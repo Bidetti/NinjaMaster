@@ -4380,7 +4380,7 @@ visibility_layer = 4
 
 [node name="HPBar" type="AnimatedSprite2D" parent="CanvasLayer"]
 unique_name_in_owner = true
-position = Vector2(78, 58)
+position = Vector2(1105, 44)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_p7iby")
 animation = &"0_hp"

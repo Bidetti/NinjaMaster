@@ -5,6 +5,8 @@ class_name MeleeEnemy
 @export var pursuit_range: float = 80.0
 @export var attack_cooldown: float = 1.0
 @export var aggressive_speed_multiplier: float = 1.5
+@export var detection_range_override: float = 300.0
+@export var pursuit_range_override: float = 350.0
 
 var attack_timer: float = 0.0
 var is_in_aggressive_mode: bool = false
@@ -21,6 +23,7 @@ func setup_melee_enemy():
 	points_value = 10
 	current_hp = max_hp
 	base_move_speed = move_speed
+	detection_range = detection_range_override
 
 func _physics_process(delta):
 	super._physics_process(delta)
@@ -45,10 +48,10 @@ func update_aggressive_mode():
 		move_speed = base_move_speed * (aggressive_speed_multiplier if is_in_aggressive_mode else 1.0)
 
 func should_start_pursuing(distance: float) -> bool:
-	return distance < 200.0
+	return distance < detection_range_override
 
 func should_continue_pursuing(distance: float) -> bool:
-	return distance < 250.0
+	return distance < pursuit_range_override
 
 func should_attack(distance: float) -> bool:
 	return distance <= attack_range and attack_timer <= 0
@@ -96,16 +99,14 @@ func update_sprite_direction(direction: Vector2):
 	if current_state == EnemyState.ATTACKING:
 		return
 	
-	if abs(direction.x) > abs(direction.y):
-		if direction.x > 0:
-			scale.x = abs(scale.x)
-		else:
-			scale.x = -abs(scale.x)
+	if direction.x > 0:
+		animated_sprite.flip_h = false
+	elif direction.x < 0:
+		animated_sprite.flip_h = true
 
 func enter_hurt_state():
 	super.enter_hurt_state()
 	attack_timer = max(attack_timer, 0.5)
-
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if $AnimatedSprite2D.animation == "Death":

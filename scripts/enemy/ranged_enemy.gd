@@ -16,6 +16,9 @@ enum RangedEnemyState {
 @export var aim_duration: float = 0.5
 @export var throw_animation_duration: float = 0.8
 @export var projectile_scene: PackedScene
+@export var detection_range_override: float = 250.0
+@export var flee_range: float = 70.0
+@export var max_flee_range: float = 150.0
 
 var shoot_timer: float = 0.0
 var aim_timer: float = 0.0
@@ -35,6 +38,7 @@ func setup_ranged_enemy():
 	damage = 1
 	points_value = 20
 	current_hp = max_hp
+	detection_range = detection_range_override
 	
 	if not projectile_scene:
 		projectile_scene = preload("res://scenes/enemy/EnemyProjectile.tscn")
@@ -63,6 +67,12 @@ func update_timers(delta):
 		if throw_timer <= 0 and ranged_enemy_state == RangedEnemyState.THROWING:
 			finish_throwing()
 
+func should_start_pursuing(distance: float) -> bool:
+	return distance < detection_range_override
+
+func should_continue_pursuing(distance: float) -> bool:
+	return distance < max_flee_range
+
 func update_ranged_enemy_state_machine(delta):
 	if current_state == EnemyState.HURT or current_state == EnemyState.DEATH:
 		ranged_enemy_state = RangedEnemyState.HURT if current_state == EnemyState.HURT else RangedEnemyState.DEATH
@@ -84,13 +94,13 @@ func handle_ranged_idle_state():
 	
 	var distance = get_distance_to_player()
 	
-	if distance <= shoot_range:
-		if distance < min_distance:
+	if distance <= detection_range_override:
+		if distance < flee_range:
 			change_ranged_enemy_state(RangedEnemyState.POSITIONING)
-		elif can_shoot():
+		elif distance <= shoot_range and can_shoot():
 			start_aiming()
-	elif distance > shoot_range * 1.2:
-		change_ranged_enemy_state(RangedEnemyState.POSITIONING)
+		elif distance > shoot_range:
+			change_ranged_enemy_state(RangedEnemyState.POSITIONING)
 
 func handle_positioning_state():
 	if not player_ref:
@@ -98,11 +108,16 @@ func handle_positioning_state():
 	
 	var distance = get_distance_to_player()
 	
+	if distance < flee_range:
+		return
+	
 	if distance >= min_distance and distance <= shoot_range:
 		if can_shoot():
 			start_aiming()
 		else:
 			change_ranged_enemy_state(RangedEnemyState.IDLE)
+	elif distance > max_flee_range:
+		change_ranged_enemy_state(RangedEnemyState.IDLE)
 
 func handle_aiming_state():
 	velocity = Vector2.ZERO
@@ -131,7 +146,7 @@ func execute_positioning_movement():
 	var distance = get_distance_to_player()
 	var direction: Vector2
 	
-	if distance < min_distance:
+	if distance < flee_range:
 		direction = (global_position - player_ref.global_position).normalized()
 	elif distance > shoot_range:
 		direction = get_direction_to_player()
@@ -213,7 +228,7 @@ func update_sprite_direction(direction: Vector2):
 		return
 	
 	if direction.x != 0:
-		scale.x = abs(scale.x) if direction.x > 0 else -abs(scale.x)
+		animated_sprite.flip_h = direction.x < 0
 
 func take_damage(amount: int):
 	if ranged_enemy_state == RangedEnemyState.AIMING or ranged_enemy_state == RangedEnemyState.THROWING:
